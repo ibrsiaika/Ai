@@ -9,8 +9,8 @@ import json
 import torch
 import argparse
 from pathlib import Path
-from typing import List, Dict
-from transformers import AutoTokenizer
+from typing import List, Dict, Any
+from transformers import AutoTokenizer, PreTrainedTokenizer
 
 # Add project root to path
 project_root = Path(__file__).parent
@@ -24,7 +24,7 @@ from utils.metrics import MetricsCalculator
 class ModelValidator:
     """Comprehensive model validation and testing."""
     
-    def __init__(self, model: GPTForCausalLM, tokenizer, config_path: str = None):
+    def __init__(self, model: GPTForCausalLM, tokenizer: PreTrainedTokenizer, config_path: str = None):
         """Initialize validator.
         
         Args:
@@ -432,7 +432,7 @@ def main():
     if args.model_path:
         print(f"From checkpoint: {args.model_path}")
         # Load from checkpoint
-        model = torch.load(args.model_path)
+        model = torch.load(args.model_path, map_location='cpu')
     else:
         model = create_gpt_model(args.model_size)
         

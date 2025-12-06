@@ -365,7 +365,7 @@ def main():
     # Load model
     print(f"\nLoading model: {args.model_size}")
     if args.model_path:
-        model = torch.load(args.model_path)
+        model = torch.load(args.model_path, map_location='cpu')
     else:
         model = create_gpt_model(args.model_size)
         

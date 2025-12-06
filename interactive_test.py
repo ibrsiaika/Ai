@@ -10,20 +10,20 @@ import torch
 import argparse
 from pathlib import Path
 from typing import Dict, Optional
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, PreTrainedTokenizer
 
 # Add project root to path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from models.gpt_model import create_gpt_model
+from models.gpt_model import create_gpt_model, GPTForCausalLM
 from inference.generator import TextGenerator, GenerationConfig
 
 
 class InteractiveTester:
     """Interactive testing interface for GPT model."""
     
-    def __init__(self, model, tokenizer, config_path: Optional[str] = None):
+    def __init__(self, model: GPTForCausalLM, tokenizer: PreTrainedTokenizer, config_path: Optional[str] = None):
         """Initialize interactive tester.
         
         Args:
@@ -383,7 +383,7 @@ def main():
     
     print("Loading model...")
     if args.model_path:
-        model = torch.load(args.model_path)
+        model = torch.load(args.model_path, map_location='cpu')
     else:
         model = create_gpt_model(args.model_size)
         
