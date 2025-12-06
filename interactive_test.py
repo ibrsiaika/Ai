@@ -383,6 +383,7 @@ def main():
     
     print("Loading model...")
     if args.model_path:
+        # TODO: Add weights_only=True for production use (requires PyTorch 1.13+)
         model = torch.load(args.model_path, map_location='cpu')
     else:
         model = create_gpt_model(args.model_size)
